@@ -119,12 +119,12 @@ int main(void) {
 	display_5110 disp = {
 			.buf = &snake_start_Bitmap,
 			.hspi = &hspi1,
-			.RESET_BASE = GPIOA,
-			.RESET_PIN = GPIO_PIN_10,
-			.COM_DAT_BASE = GPIOA,
-			.COM_DAT_PIN = GPIO_PIN_11,
-			.SCE_BASE = GPIOA,
-			.SCE_PIN = GPIO_PIN_12
+			.RESET_BASE = LED_RST_GPIO_Port,
+			.RESET_PIN = LED_RST_Pin,
+			.COM_DAT_BASE = LED_DC_GPIO_Port,
+			.COM_DAT_PIN = LED_DC_Pin,
+			.SCE_BASE = LED_SCE_GPIO_Port,
+			.SCE_PIN = LED_SCE_Pin
 	};
 
 	init_display(&disp);
