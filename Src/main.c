@@ -131,64 +131,15 @@ int main(void) {
 	clear_display(&disp);
 	refresh_display(&disp);
 
-/*
-	set_position(&disp, 2, 0);
-	print_string(&disp, "UP: ", 4);
-	set_position(&disp, 2, 1);
-	print_string(&disp, "RIGHT: ", 7);
-	set_position(&disp, 2, 2);
-	print_string(&disp, "DOWN: ", 6);
-	set_position(&disp, 2, 3);
-	print_string(&disp, "LEFT: ", 6);
-	set_position(&disp, 2, 4);
-	print_string(&disp, "CTRL: ", 6);
-*/
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
 	while (1) {
-/*
-		if (HAL_GPIO_ReadPin(BTN_UP_GPIO_Port, BTN_UP_Pin) == GPIO_PIN_RESET) {
-			set_position(&disp, 36, 0);
-			print_string(&disp, "1", 1);
-		} else {
-			set_position(&disp, 36, 0);
-			print_string(&disp, "0", 1);
-		}
 
-		if (HAL_GPIO_ReadPin(BTN_RIGHT_GPIO_Port, BTN_RIGHT_Pin) == GPIO_PIN_RESET) {
-			set_position(&disp, 36, 1);
-			print_string(&disp, "1", 1);
-		} else {
-			set_position(&disp, 36, 1);
-			print_string(&disp, "0", 1);
-		}
 
-		if (HAL_GPIO_ReadPin(BTN_DOWN_GPIO_Port, BTN_DOWN_Pin) == GPIO_PIN_RESET) {
-			set_position(&disp, 36, 2);
-			print_string(&disp, "1", 1);
-		} else {
-			set_position(&disp, 36, 2);
-			print_string(&disp, "0", 1);
-		}
 
-		if (HAL_GPIO_ReadPin(BTN_LEFT_GPIO_Port, BTN_LEFT_Pin) == GPIO_PIN_RESET) {
-			set_position(&disp, 36, 3);
-			print_string(&disp, "1", 1);
-		} else {
-			set_position(&disp, 36, 3);
-			print_string(&disp, "0", 1);
-		}
 
-		if (HAL_GPIO_ReadPin(BTN_CTRL_GPIO_Port, BTN_CTRL_Pin) == GPIO_PIN_RESET) {
-			set_position(&disp, 36, 4);
-			print_string(&disp, "1", 1);
-		} else {
-			set_position(&disp, 36, 4);
-			print_string(&disp, "0", 1);
-		}
-*/
 		HAL_Delay(10000);
 
 		/* USER CODE END WHILE */

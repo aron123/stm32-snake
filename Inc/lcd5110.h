@@ -13,7 +13,10 @@
 #include <stddef.h>
 #include "stm32f1xx_hal.h"
 
-uint8_t display_buffer[6][84];
+#define LCD_LINES 6
+#define LCD_COLUMNS 84
+
+uint8_t display_buffer[LCD_LINES][LCD_COLUMNS];
 
 typedef struct {
     uint8_t * buf;
