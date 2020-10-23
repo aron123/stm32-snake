@@ -1,6 +1,8 @@
 /*
- * Library: https://github.com/embeddedden/lcd5110_driver
+ * Original library: https://github.com/embeddedden/lcd5110_driver
  * Tutorial: https://embeddedden.blogspot.com/2017/05/first-steps-with-stm32l152-spi-handling.html
+ * ------
+ * Extended by Kiss, Aron.
  */
 
 

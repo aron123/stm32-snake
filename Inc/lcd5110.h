@@ -1,3 +1,10 @@
+/*
+ * Original library: https://github.com/embeddedden/lcd5110_driver
+ * Tutorial: https://embeddedden.blogspot.com/2017/05/first-steps-with-stm32l152-spi-handling.html
+ * ------
+ * Extended by Kiss, Aron.
+ */
+
 #ifndef LCD5110_H
 #define LCD5110_H
 
@@ -5,11 +12,8 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include "stm32f1xx_hal.h"
-//#include "stm32f1xx_hal_spi.h"
-
 
 uint8_t display_buffer[6][84];
-
 
 typedef struct {
     uint8_t * buf;

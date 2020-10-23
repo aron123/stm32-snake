@@ -49,14 +49,24 @@
 
 /* Private define ------------------------------------------------------------*/
 
-#define RST_Pin GPIO_PIN_10
-#define RST_GPIO_Port GPIOA
-#define DC_Pin GPIO_PIN_11
-#define DC_GPIO_Port GPIOA
-#define SCE_Pin GPIO_PIN_12
-#define SCE_GPIO_Port GPIOA
-#define LED_DC_Pin GPIO_PIN_6
-#define LED_DC_GPIO_Port GPIOB
+#define BTN_CTRL_Pin GPIO_PIN_10
+#define BTN_CTRL_GPIO_Port GPIOB
+#define BTN_RIGHT_Pin GPIO_PIN_7
+#define BTN_RIGHT_GPIO_Port GPIOC
+#define BTN_LEFT_Pin GPIO_PIN_8
+#define BTN_LEFT_GPIO_Port GPIOA
+#define BTN_DOWN_Pin GPIO_PIN_9
+#define BTN_DOWN_GPIO_Port GPIOA
+#define LED_RST_Pin GPIO_PIN_10
+#define LED_RST_GPIO_Port GPIOA
+#define LED_DC_Pin GPIO_PIN_11
+#define LED_DC_GPIO_Port GPIOA
+#define LED_SCE_Pin GPIO_PIN_12
+#define LED_SCE_GPIO_Port GPIOA
+#define SPKR_Pin GPIO_PIN_4
+#define SPKR_GPIO_Port GPIOB
+#define BTN_UP_Pin GPIO_PIN_6
+#define BTN_UP_GPIO_Port GPIOB
 
 /* ########################## Assert Selection ############################## */
 /**
