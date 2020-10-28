@@ -166,17 +166,17 @@ void refresh_display(display_5110 *display) {
     switch_to_data_mode(display);
     for (int i = 0; i < LCD_LINES; i++) {
         set_position(display, 0, i);
-        for (int j = 0; j < LCD_COLUMNS; i++) {
+        for (int j = 0; j < LCD_COLUMNS; j++) {
             HAL_GPIO_WritePin(display->SCE_BASE, display->SCE_PIN, GPIO_PIN_RESET);
 
             uint8_t byte = 0x00;
             for (int k = 0; k < 8; k++) {
-                // i: position in buffer (line: 0-5)
+                // i: position in byte (current column to write)
                 // j: position in buffer (column: 0-83)
-                // k: position in byte (current column to write)
+                // k: position in buffer (line: 0-5)
 
                 int buff_idx = (i * 11 * 8) + k * 11 + (int) floor(j / 8);
-                int pos = 7 - j % 8;
+                int pos = 7- (j % 8);
 
                 uint8_t element = display->buf[buff_idx];
                 int bit_set = is_bit_set(element, pos);
@@ -185,11 +185,8 @@ void refresh_display(display_5110 *display) {
                 }
             }
 
-            return;
-
             HAL_SPI_Transmit(display->hspi, &byte, 1, 10);
             HAL_GPIO_WritePin(display->SCE_BASE, display->SCE_PIN, GPIO_PIN_SET);
         }
     }
 }
-
