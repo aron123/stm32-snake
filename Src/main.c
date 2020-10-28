@@ -40,6 +40,7 @@
 #include "stm32f1xx_hal.h"
 
 /* USER CODE BEGIN Includes */
+#include <string.h>
 #include "lcd5110.h"
 #include "logo.h"
 /* USER CODE END Includes */
@@ -63,22 +64,37 @@ static void MX_SPI1_Init(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
+uint32_t getUs(void) {
+	uint32_t usTicks = HAL_RCC_GetSysClockFreq() / 1000000;
+	register uint32_t ms, cycle_cnt;
 
-void playSound() {
-	for (int i = 0; i < 150; i++) {
-		HAL_GPIO_WritePin(SPKR_GPIO_Port, SPKR_Pin, GPIO_PIN_SET);
-		HAL_Delay(1);
-		HAL_GPIO_WritePin(SPKR_GPIO_Port, SPKR_Pin, GPIO_PIN_RESET);
-		HAL_Delay(1);
+	do {
+		ms = HAL_GetTick();
+		cycle_cnt = SysTick->VAL;
+	} while (ms != HAL_GetTick());
+
+	return (ms * 1000) + (usTicks * 1000 - cycle_cnt) / usTicks;
+
+}
+
+void delayUs(uint32_t micros) {
+	uint32_t start = getUs();
+
+	while (getUs() - start < (uint32_t) micros) {
+		asm("nop");
 	}
 
-	HAL_Delay(250);
+}
 
-	for (int i = 0; i < 150; i++) {
+void tone(int frequency, int duration) {
+	unsigned long startTime = HAL_GetTick();
+	unsigned long halfPeriod = 1000000L /frequency/2;
+
+	while (HAL_GetTick()-startTime< duration) {
 		HAL_GPIO_WritePin(SPKR_GPIO_Port, SPKR_Pin, GPIO_PIN_SET);
-		HAL_Delay(2);
+		delayUs(halfPeriod);
 		HAL_GPIO_WritePin(SPKR_GPIO_Port, SPKR_Pin, GPIO_PIN_RESET);
-		HAL_Delay(2);
+		delayUs(halfPeriod);
 	}
 }
 
@@ -115,9 +131,11 @@ int main(void) {
 	MX_SPI1_Init();
 	/* USER CODE BEGIN 2 */
 
-	//playSound();
+	uint8_t lcd_buffer[528] = { 0x00 };
+	memcpy(lcd_buffer, snake_start_Bitmap, LCD_BUFFER_SIZE);
+
 	display_5110 disp = {
-			.buf = &snake_start_Bitmap,
+			.buf = &lcd_buffer,
 			.hspi = &hspi1,
 			.RESET_BASE = LED_RST_GPIO_Port,
 			.RESET_PIN = LED_RST_Pin,
@@ -128,17 +146,56 @@ int main(void) {
 	};
 
 	init_display(&disp);
-	clear_display(&disp);
+	print_string(&disp, "Play: F button", 14, 0, 40);
 	refresh_display(&disp);
+
+
+	tone(1318, 94.56519375);
+	  HAL_Delay(105.0724375);
+	  HAL_Delay(3.6231875);
+	  tone(1174, 100.271714063);
+	  HAL_Delay(111.413015625);
+	  HAL_Delay(9.05796875);
+	  tone(739, 183.423867188);
+	  HAL_Delay(203.804296875);
+	  HAL_Delay(6.340578125);
+	  tone(830, 185.86951875);
+	  HAL_Delay(206.5216875);
+	  HAL_Delay(1.81159375);
+	  tone(1108, 86.413021875);
+	  HAL_Delay(96.01446875);
+	  HAL_Delay(0.905796875);
+	  tone(987, 105.978234375);
+	  HAL_Delay(117.75359375);
+	  HAL_Delay(0.905796875);
+	  tone(587, 207.065165625);
+	  HAL_Delay(230.07240625);
+	  HAL_Delay(0.905796875);
+	  tone(659, 221.739075);
+	  HAL_Delay(246.37675);
+	  HAL_Delay(0.905796875);
+	  tone(987, 103.532582813);
+	  HAL_Delay(115.036203125);
+	  HAL_Delay(2.717390625);
+	  tone(880, 126.358664063);
+	  HAL_Delay(140.398515625);
+	  HAL_Delay(0.905796875);
+	  tone(554, 237.228201563);
+	  HAL_Delay(263.586890625);
+	  tone(554, 237.228201563);
+	  HAL_Delay(57.065203125);
+	  tone(659, 237.228201563);
+	  HAL_Delay(57.065203125);
+	  tone(759, 237.228201563);
+	  HAL_Delay(57.065203125);
+	  tone(880, 684.7824375);
+	  HAL_Delay(760.869375);
 
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
 	while (1) {
-
-
-
 
 		HAL_Delay(10000);
 
