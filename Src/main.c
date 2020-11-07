@@ -215,8 +215,8 @@ void moveFood(int snake[][2], int snakeLength, int food[2]) {
     int width, height;
 
     do {
-        width = rand() % (GAME_WIDTH - 1) + 1;
-        height = rand() % (GAME_HEIGHT - 1) + 1;
+        width = rand() % (GAME_WIDTH - 1);
+        height = rand() % (GAME_HEIGHT - 1);
     } while (isFoodInsideSnake(snake, snakeLength, width, height));
 
     food[0] = width;
@@ -302,51 +302,21 @@ void tone(int frequency, int duration) {
 }
 
 void playNokiaTune() {
-    tone(1318, 2000);
-
-    // TODO
-    /*
-    tone(SPEAKER_OUT, 1318, 94.56519375);
-    HAL_Delay(105.0724375);
-    HAL_Delay(3.6231875);
-    tone(SPEAKER_OUT, 1174, 100.271714063);
-    HAL_Delay(111.413015625);
-    HAL_Delay(9.05796875);
-    tone(SPEAKER_OUT, 739, 183.423867188);
-    HAL_Delay(203.804296875);
-    HAL_Delay(6.340578125);
-    tone(SPEAKER_OUT, 830, 185.86951875);
-    HAL_Delay(206.5216875);
-    HAL_Delay(1.81159375);
-    tone(SPEAKER_OUT, 1108, 86.413021875);
-    HAL_Delay(96.01446875);
-    HAL_Delay(0.905796875);
-    tone(SPEAKER_OUT, 987, 105.978234375);
-    HAL_Delay(117.75359375);
-    HAL_Delay(0.905796875);
-    tone(SPEAKER_OUT, 587, 207.065165625);
-    HAL_Delay(230.07240625);
-    HAL_Delay(0.905796875);
-    tone(SPEAKER_OUT, 659, 221.739075);
-    HAL_Delay(246.37675);
-    HAL_Delay(0.905796875);
-    tone(SPEAKER_OUT, 987, 103.532582813);
-    HAL_Delay(115.036203125);
-    HAL_Delay(2.717390625);
-    tone(SPEAKER_OUT, 880, 126.358664063);
-    HAL_Delay(140.398515625);
-    HAL_Delay(0.905796875);
-    tone(SPEAKER_OUT, 554, 237.228201563);
-    HAL_Delay(263.586890625);
-    tone(SPEAKER_OUT, 554, 237.228201563);
-    HAL_Delay(57.065203125);
-    tone(SPEAKER_OUT, 659, 237.228201563);
-    HAL_Delay(57.065203125);
-    tone(SPEAKER_OUT, 759, 237.228201563);
-    HAL_Delay(57.065203125);
-    tone(SPEAKER_OUT, 880, 684.7824375);
-    HAL_Delay(760.869375);
-    */
+    tone(1318, 112);
+    tone(1174, 120);
+    tone(739, 219);
+    tone(830, 222);
+    tone(1108, 103);
+    tone(987, 126);
+    tone(587, 248);
+    tone(659, 265);
+    tone(987, 123);
+    tone(880, 151);
+    tone(554, 164);
+    tone(554, 164);
+    tone(659, 164);
+    tone(759, 164);
+    tone(880, 460);
 }
 
 void playFoodCatchSound() {
@@ -355,55 +325,25 @@ void playFoodCatchSound() {
 }
 
 void playGameOverSound() {
-    tone(1318, 2000);
-    // TODO
-    /*
-    tone(SPEAKER_OUT, 369, 75.0);
-    HAL_Delay(83.3333333333);
-    tone(SPEAKER_OUT, 349, 75.0);
-    HAL_Delay(83.3333333333);
-    tone(SPEAKER_OUT, 311, 75.0);
-    HAL_Delay(83.3333333333);
-    tone(SPEAKER_OUT, 277, 75.0);
-    HAL_Delay(83.3333333333);
-    tone(SPEAKER_OUT, 261, 75.0);
-    HAL_Delay(83.3333333333);
-    tone(SPEAKER_OUT, 233, 75.0);
-    HAL_Delay(83.3333333333);
-    tone(SPEAKER_OUT, 220, 450.0);
-    HAL_Delay(500.0);
-    */
+    tone(369, 75);
+    tone(349, 75);
+    tone(311, 75);
+    tone(277, 75);
+    tone(261, 75);
+    tone(233, 75);
+    tone(220, 450);
 }
 
 void playWinnerSound() {
-    tone(1318, 2000);
-
-    // TODO
-    /*
-    tone(SPEAKER_OUT, 220, 78.94725);
-    HAL_Delay(87.7191666667);
-    HAL_Delay(175.438333333);
-    tone(SPEAKER_OUT, 220, 78.94725);
-    HAL_Delay(87.7191666667);
-    tone(SPEAKER_OUT, 220, 78.94725);
-    HAL_Delay(87.7191666667);
-    tone(SPEAKER_OUT, 220, 78.94725);
-    HAL_Delay(87.7191666667);
-    tone(SPEAKER_OUT, 246, 78.94725);
-    HAL_Delay(87.7191666667);
-    HAL_Delay(175.438333333);
-    tone(SPEAKER_OUT, 246, 78.94725);
-    HAL_Delay(87.7191666667);
-    HAL_Delay(175.438333333);
-    tone(SPEAKER_OUT, 277, 78.94725);
-    HAL_Delay(87.7191666667);
-    HAL_Delay(175.438333333);
-    tone(SPEAKER_OUT, 220, 78.94725);
-    HAL_Delay(87.7191666667);
-    HAL_Delay(175.438333333);
-    tone(SPEAKER_OUT, 246, 236.84175);
-    HAL_Delay(263.1575);
-    */
+    tone(220, 78);
+    tone(220, 78);
+    tone(220, 78);
+    tone(220, 78);
+    tone(246, 78);
+    tone(246, 78);
+    tone(277, 78);
+    tone(220, 78);
+    tone(246, 236);
 }
 
 
