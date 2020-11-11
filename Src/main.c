@@ -45,6 +45,8 @@
 #include <stdlib.h>
 #include "lcd5110.h"
 #include "logo.h"
+#include "game.h"
+#include "tone.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -87,6 +89,7 @@ int mode = MODE_START_SCREEN;
 int gameState = GAME_STATE_IN_PROGRESS;
 
 void initializeGame() {
+    srand(__HAL_TIM_GET_COUNTER(&htim1));
     snakeLength = 4;
     snakeDirection = SNAKE_DIRECTION_LEFT;
     food[0] = 4;
@@ -122,228 +125,6 @@ void drawSnake(int snake[][2], int length) {
 
 void drawFood(int food[2]) {
     draw_filled_rect(&display, BLOCK_SIZE * food[0], BLOCK_SIZE * food[1], BLOCK_SIZE, BLOCK_SIZE);
-}
-
-int determineDirection(int currentDirection) {
-    int upPushed = HAL_GPIO_ReadPin(BTN_UP_GPIO_Port, BTN_UP_Pin) == GPIO_PIN_RESET;
-    int rightPushed = HAL_GPIO_ReadPin(BTN_RIGHT_GPIO_Port, BTN_RIGHT_Pin) == GPIO_PIN_RESET;
-    int downPushed = HAL_GPIO_ReadPin(BTN_DOWN_GPIO_Port, BTN_DOWN_Pin) == GPIO_PIN_RESET;
-    int leftPushed = HAL_GPIO_ReadPin(BTN_LEFT_GPIO_Port, BTN_LEFT_Pin) == GPIO_PIN_RESET;
-
-    if (!upPushed && !rightPushed && !downPushed && !leftPushed) {
-        return currentDirection;
-    }
-
-    if ((upPushed && currentDirection == SNAKE_DIRECTION_UP) || (rightPushed && currentDirection == SNAKE_DIRECTION_RIGHT)
-            || (downPushed && currentDirection == SNAKE_DIRECTION_DOWN)
-            || (leftPushed && currentDirection == SNAKE_DIRECTION_LEFT)) {
-        return currentDirection;
-    }
-
-    if ((upPushed && currentDirection == SNAKE_DIRECTION_DOWN) || (rightPushed && currentDirection == SNAKE_DIRECTION_LEFT)
-            || (downPushed && currentDirection == SNAKE_DIRECTION_UP)
-            || (leftPushed && currentDirection == SNAKE_DIRECTION_RIGHT)) {
-        return currentDirection;
-    }
-
-    int pushedCount = 0;
-    int buttonPushes[] = { upPushed, rightPushed, downPushed, leftPushed };
-
-    for (int i = 0; i < 4; i++) {
-        pushedCount += buttonPushes[i];
-    }
-
-    if (pushedCount != 1) {
-        return currentDirection;
-    }
-
-    if (upPushed) {
-        return SNAKE_DIRECTION_UP;
-    }
-    if (rightPushed) {
-        return SNAKE_DIRECTION_RIGHT;
-    }
-    if (downPushed) {
-        return SNAKE_DIRECTION_DOWN;
-    }
-    if (leftPushed) {
-        return SNAKE_DIRECTION_LEFT;
-    }
-
-    return -1;
-}
-
-int isFoodInsideSnake(int snake[][2], int snakeLength, int foodX, int foodY) {
-    for (int i = 0; i < snakeLength; i++) {
-        if (snake[i][0] == foodX && snake[i][1] == foodY) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-int isSnakeEating(int snake[][2], int snakeLength, int food[2]) {
-    int head = snakeLength - 1;
-    return food[0] == snake[head][0] && food[1] == snake[head][1];
-}
-
-int isSnakeBitesItself(int snake[][2], int snakeLength) {
-    int headX = snake[snakeLength - 1][0];
-    int headY = snake[snakeLength - 1][1];
-
-    for (int i = 0; i < snakeLength - 1; i++) {
-        if (snake[i][0] == headX && snake[i][1] == headY) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-int isSnakeCollidesWithWall(int snake[][2], int snakeLength, int direction) {
-    int headX = snake[snakeLength - 1][0];
-    int headY = snake[snakeLength - 1][1];
-
-    return ((headX == 0 && direction == SNAKE_DIRECTION_LEFT)
-            || (headY == 0 && direction == SNAKE_DIRECTION_UP)
-            || (headX == GAME_WIDTH - 1 && direction == SNAKE_DIRECTION_RIGHT)
-            || (headY == GAME_HEIGHT - 1 && direction == SNAKE_DIRECTION_DOWN));
-}
-
-void moveFood(int snake[][2], int snakeLength, int food[2]) {
-    int width, height;
-
-    do {
-        width = rand() % (GAME_WIDTH - 1);
-        height = rand() % (GAME_HEIGHT - 1);
-    } while (isFoodInsideSnake(snake, snakeLength, width, height));
-
-    food[0] = width;
-    food[1] = height;
-}
-
-void moveSnake(int snake[][2], int length, int direction, int doEats) {
-    int previousBlock[2] = { 0, 0 };
-    int head = length - 1;
-
-    // if snake eats, only put one block on the head
-    if (doEats) {
-        int secondBlock[2] = { snake[head - 1][0], snake[head - 1][1] };
-
-        if (direction == SNAKE_DIRECTION_UP) {
-            snake[head][0] = secondBlock[0];
-            snake[head][1] = secondBlock[1] - 1;
-        } else if (direction == SNAKE_DIRECTION_RIGHT) {
-            snake[head][0] = secondBlock[0] + 1;
-            snake[head][1] = secondBlock[1];
-        } else if (direction == SNAKE_DIRECTION_DOWN) {
-            snake[head][0] = secondBlock[0];
-            snake[head][1] = secondBlock[1] + 1;
-        } else if (direction == SNAKE_DIRECTION_LEFT) {
-            snake[head][0] = secondBlock[0] - 1;
-            snake[head][1] = secondBlock[1];
-        }
-
-        return;
-    }
-
-    // avoid to overcome borders
-    if ((direction == SNAKE_DIRECTION_UP && snake[head][1] == 0)
-            || (direction == SNAKE_DIRECTION_RIGHT && snake[head][0] == GAME_WIDTH - 1)
-            || (direction == SNAKE_DIRECTION_DOWN && snake[head][1] == GAME_HEIGHT - 1)
-            || (direction == SNAKE_DIRECTION_LEFT && snake[head][0] == 0)) {
-        return;
-    }
-
-    // move head, shift body parts
-    for (int i = length - 1; i >= 0; i--) {
-        if (i == length - 1) {
-            previousBlock[0] = snake[i][0];
-            previousBlock[1] = snake[i][1];
-
-            if (direction == SNAKE_DIRECTION_UP) {
-                snake[i][1] -= 1;
-            } else if (direction == SNAKE_DIRECTION_RIGHT) {
-                snake[i][0] += 1;
-            } else if (direction == SNAKE_DIRECTION_DOWN) {
-                snake[i][1] += 1;
-            } else if (direction == SNAKE_DIRECTION_LEFT) {
-                snake[i][0] -= 1;
-            }
-        } else {
-            int tmp = snake[i][0];
-            snake[i][0] = previousBlock[0];
-            previousBlock[0] = tmp;
-
-            tmp = snake[i][1];
-            snake[i][1] = previousBlock[1];
-            previousBlock[1] = tmp;
-        }
-    }
-}
-
-void delay_microseconds(uint16_t us) {
-    __HAL_TIM_SET_COUNTER(&htim1, 0);
-    while (__HAL_TIM_GET_COUNTER(&htim1) < us)
-        ;
-}
-
-void tone(int frequency, int duration) {
-    unsigned long startTime = HAL_GetTick();
-    unsigned long halfPeriod = 1000000L / frequency / 2;
-
-    while (HAL_GetTick() - startTime < duration) {
-        HAL_GPIO_WritePin(SPKR_GPIO_Port, SPKR_Pin, GPIO_PIN_SET);
-        delay_microseconds(halfPeriod);
-        HAL_GPIO_WritePin(SPKR_GPIO_Port, SPKR_Pin, GPIO_PIN_RESET);
-        delay_microseconds(halfPeriod);
-    }
-}
-
-void playNokiaTune() {
-    tone(1318, 112);
-    tone(1174, 120);
-    tone(739, 219);
-    tone(830, 222);
-    tone(1108, 103);
-    tone(987, 126);
-    tone(587, 248);
-    tone(659, 265);
-    tone(987, 123);
-    tone(880, 151);
-    tone(554, 164);
-    tone(554, 164);
-    tone(659, 164);
-    tone(759, 164);
-    tone(880, 460);
-}
-
-void playFoodCatchSound() {
-    tone(400, 30);
-    tone(500, 30);
-}
-
-void playGameOverSound() {
-    tone(369, 75);
-    tone(349, 75);
-    tone(311, 75);
-    tone(277, 75);
-    tone(261, 75);
-    tone(233, 75);
-    tone(220, 450);
-}
-
-void playWinnerSound() {
-    tone(220, 78);
-    tone(220, 78);
-    tone(220, 78);
-    tone(220, 78);
-    tone(246, 78);
-    tone(246, 78);
-    tone(277, 78);
-    tone(220, 78);
-    tone(246, 236);
 }
 
 
@@ -383,8 +164,6 @@ int main(void)
   /* USER CODE BEGIN 2 */
     HAL_TIM_Base_Start(&htim1);
 
-    srand(1);
-
     // Setup display
     uint8_t lcd_buffer[528] = { 0x00 };
     memcpy(lcd_buffer, snake_start_Bitmap, LCD_BUFFER_SIZE);
@@ -407,7 +186,7 @@ int main(void)
             int doBitesItself = false;
             int doCollidesWithWall = false;
 
-            playNokiaTune();
+            playNokiaTune(&htim1, SPKR_GPIO_Port, SPKR_Pin);
 
             while (true) {
                 clear_display(&display);
@@ -418,21 +197,21 @@ int main(void)
 
                 if (doEats) {
                     snakeLength++;
-                    playFoodCatchSound();
+                    playFoodCatchSound(&htim1, SPKR_GPIO_Port, SPKR_Pin);
                     moveFood(snake, snakeLength, food);
                 }
 
                 if (doBitesItself || doCollidesWithWall) {
                     gameState = GAME_STATE_GAMEOVER;
                     mode = MODE_RESULT_SCREEN;
-                    playGameOverSound();
+                    playGameOverSound(&htim1, SPKR_GPIO_Port, SPKR_Pin);
                     break;
                 }
 
                 if (snakeLength == SNAKE_MAX_SIZE) {
                     gameState = GAME_STATE_WIN;
                     mode = MODE_RESULT_SCREEN;
-                    playWinnerSound();
+                    playWinnerSound(&htim1, SPKR_GPIO_Port, SPKR_Pin);
                     break;
                 }
 
