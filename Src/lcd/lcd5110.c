@@ -5,10 +5,8 @@
  * Extended by Kiss, Aron.
  */
 
-#include "lcd5110.h"
-#include "stm32f1xx_hal_gpio.h"
-#include "stm32f1xx_hal_spi.h"
-#include "ascii_table.h"
+#include "lcd/lcd5110.h"
+#include "lcd/ascii_table.h"
 #include <math.h>
 
 /* Private functions */

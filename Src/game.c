@@ -6,6 +6,7 @@
  */
 #include <stdlib.h>
 #include "stm32f1xx_hal.h"
+#include "game.h"
 
 int determineDirection(int currentDirection) {
     int upPushed = HAL_GPIO_ReadPin(BTN_UP_GPIO_Port, BTN_UP_Pin) == GPIO_PIN_RESET;
