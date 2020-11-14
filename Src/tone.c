@@ -10,8 +10,7 @@
 
 void delay_microseconds(TIM_HandleTypeDef* timer, uint16_t us) {
     __HAL_TIM_SET_COUNTER(timer, 0);
-    while (__HAL_TIM_GET_COUNTER(timer) < us)
-        ;
+    while (__HAL_TIM_GET_COUNTER(timer) < us);
 }
 
 void tone(TIM_HandleTypeDef* timer, GPIO_TypeDef* port, uint16_t pin, int frequency, int duration) {

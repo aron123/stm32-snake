@@ -43,7 +43,7 @@
 /* USER CODE BEGIN Includes */
 #include <string.h>
 #include <stdlib.h>
-#include "lcd5110.h"
+#include "lcd/lcd5110.h"
 #include "logo.h"
 #include "game.h"
 #include "tone.h"
@@ -162,15 +162,15 @@ int main(void)
   MX_SPI1_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
-    HAL_TIM_Base_Start(&htim1);
+  HAL_TIM_Base_Start(&htim1);
 
-    // Setup display
-    uint8_t lcd_buffer[528] = { 0x00 };
-    memcpy(lcd_buffer, snake_start_Bitmap, LCD_BUFFER_SIZE);
-    display.buf = lcd_buffer;
-    init_display(&display);
-    print_string(&display, "Play: F button", 14, 0, 40);
-    refresh_display(&display);
+  // Setup display
+  uint8_t lcd_buffer[528] = { 0x00 };
+  memcpy(lcd_buffer, snake_start_Bitmap, LCD_BUFFER_SIZE);
+  display.buf = lcd_buffer;
+  init_display(&display);
+  print_string(&display, "Play: F button", 14, 0, 40);
+  refresh_display(&display);
 
   /* USER CODE END 2 */
 

@@ -80,24 +80,6 @@
 #define true 1
 #define false 0
 
-#define BLOCK_SIZE 3
-#define GAME_WIDTH 84/BLOCK_SIZE
-#define GAME_HEIGHT 48/BLOCK_SIZE
-#define SNAKE_MAX_SIZE 64
-
-#define SNAKE_DIRECTION_UP 1
-#define SNAKE_DIRECTION_RIGHT 2
-#define SNAKE_DIRECTION_DOWN 3
-#define SNAKE_DIRECTION_LEFT 4
-
-#define MODE_START_SCREEN 1
-#define MODE_GAME_SCREEN 2
-#define MODE_RESULT_SCREEN 3
-
-#define GAME_STATE_IN_PROGRESS 1
-#define GAME_STATE_WIN 2
-#define GAME_STATE_GAMEOVER 3
-
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
